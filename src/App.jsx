@@ -1,4 +1,5 @@
 import './App.css'
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import HomePage from './components/pages/HomePage.jsx'
 import ApiRestIndex from './components/pages/ApiRestIndex.jsx'
 import Cards from './components/pages/Cards.jsx'
@@ -18,6 +19,7 @@ function App() {
           <Route path="/api/v1/cards" element={<Cards/>}></Route>
           <Route path="/cards" element={<BackCards/>}></Route>
           <Route path="/play" element={<Play/>}></Route>
+          <Route path="/cards" element={<CardServiceApi/>}></Route>
           {/* <Route path="/PATH" element={<PAGE/>}></Route> */}
         </Routes>
       </Router>

@@ -19,6 +19,9 @@ function NavBar() {
                         <li>
                             <a href="/play">Play</a>
                         </li>
+                        <li>
+                            <a href="/cards">Play</a>
+                        </li>
                     </ul>
                 </div>
 
