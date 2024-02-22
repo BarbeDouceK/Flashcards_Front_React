@@ -3,13 +3,12 @@ import { useEffect, useState } from "react";
 import ApiService from "../../service/ApiService";
 import ReactModal from "react-modal";
 
-function Cards() {
+function Tiroir() {
 
-    const monService = new ApiService("http://localhost:8080/api/v1/")
-    const endpoint = "cards";
+    const api = new ApiService("http://localhost:8080/api/v1/")
+    const endpoint = "passages/user/";
 
-
-    const [cards, setCards] = useState([]);
+    const [passages, setPassages] = useState([]);
     const [pageable, setPage] = useState({
         pageNumber: 0,
         totalPages: 0
@@ -26,19 +25,21 @@ function Cards() {
 
     const [isModalOpen, setModalOpen] = useState(false)
 
-    const [newCard, setNewCard] = useState({
+    const [newPassage, setNewPassage] = useState({
         categoryName: "",
         title: "",
         question: "",
-        answer: ""
+        answer: "",
+        niveau: "",
+        dateUpdate: ""
     });
 
     const [load, setLoad] = useState(true);
 
     useEffect(() => {
-        monService.get(endpoint + pagepoint)
+        api.get(endpoint + pagepoint)
             .then((response) => {
-                setCards(response.content)
+                setPassages(response.content)
                 if (load) {
                     setPage({
                         pageNumber: response.pageable.pageNumber,
@@ -54,15 +55,15 @@ function Cards() {
     }, [pageable]);
 
     useEffect(() => {
-        if (newCard.title !== "") {
-            monService.post(endpoint, newCard)
+        if (newPassage.title !== "") {
+            api.post(endpoint, newCard)
                 .then((data) => {
-                    setNewCard((prevCards) => [...prevCards, data]);
+                    setNewPassage((prevPassages) => [...prevPassages, data]);
                 })
                 .catch((error) => alert(error.message))
                 .finally(() => console.log('Post terminé'))
         }
-    }, [newCard])
+    }, [newPassage])
 
     console.log(pageable);
 
@@ -87,21 +88,21 @@ function Cards() {
 
         const formData = new FormData(e.target)
 
-        setNewCard({
-            categoryName: formData.get('categoryName'),
-            title: formData.get('title'),
-            question: formData.get('question'),
-            answer: formData.get('answer')
+        setNewPassage({
+            cardId: formData.get('cardId'),
+            niveau: formData.get('title'),
+            dateUpdate: "",
+            userId: ""
         })
         closeModal();
     }
 
-    const deleteCard = (cardId) => {
-        monService.delete(endpoint + "/" + cardId)
+    const deleteCard = (PassageId) => {
+        api.delete(endpoint + "/" + PassageId)
             .then(() => {
-                console.log(`Produit avec ID ${cardId} supprimé`)
-                setCards((prevCards) =>
-                    prevCards.filter((card) => card.id !== cardId)
+                console.log(`Passage avec ID ${PassageId} supprimé`)
+                setPassages((prevPassage) =>
+                    prevPassage.filter((Passage) => Passage.id !== PassageId)
                 );
             })
             .catch(error => alert(error.message));
@@ -109,10 +110,10 @@ function Cards() {
 
     return (
         <>
-            <h1>Les cartes récupérés en passant par mon service: </h1>
+            <h1>Les Passages récuperés en passant par mon API :</h1>
             <div className="m-10 w-4/6 m-auto">
                 <div className="flex justify-end mb-5">
-                    <button className="btn btn-outline btn-inf" onClick={openModal}>Ajouter une nouvelle carte</button>
+                    <button className="btn btn-outline btn-inf" onClick={openModal}>Ajouter un Passage ? mdr non</button>
                 </div>
                 <div className="grid grid-cols-3 gap-10 mb-5">
                     <button className="btn btn-outline btn-inf" disabled={pageable.pageNumber == 0} onClick={() => changePage(pageable.pageNumber - 1)}>T---</button>
@@ -122,23 +123,23 @@ function Cards() {
                 <table className="table table-zebra border">
                     <thead>
                         <tr>
-                            <th>Titre</th>
-                            <th>Catégorie</th>
-                            <th>Question</th>
-                            <th>Réponse</th>
+                            <th>cardId</th>
+                            <th>niveau</th>
+                            <th>dateUpdate</th>
+                            <th>userId</th>
                             <th></th>
                         </tr>
                     </thead>
                     <tbody>
-                        {cards.map((card) => (
-                            <tr key={card.id}>
-                                <td>{card.title}</td>
-                                <td>{card.categoryName}</td>
-                                <td>{card.question}</td>
-                                <td>{card.answer}</td>
+                        {passages.map((passage) => (
+                            <tr key={passage.id}>
+                                <td>{passage.cardId}</td>
+                                <td>{passage.niveau}</td>
+                                <td>{passage.dateUpdate}</td>
+                                <td>{passage.userId}</td>
                                 <td>
                                     <button
-                                        onClick={() => { deleteCard(card.id) }}
+                                        onClick={() => { deletePassage(passage.id) }}
                                         className="btn btn-error m-auto"
                                     >Supprimer</button>
                                 </td>
@@ -154,36 +155,16 @@ function Cards() {
                 onRequestClose={closeModal}
                 className="w-fit h-fit border p-10 mx-auto absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gray-50"
             >
-                <p className="font-semibold"> Ajouter votre carte: </p>
+                <p className="font-semibold"> Ajouter votre passage ?: </p>
 
                 <form onSubmit={handleSubmit}>
-
                     <div className="grid grid-cols-2 gap-4 mb-5">
                         <input
-                            placeholder="Titre de la carte: "
+                            placeholder="Id de la carte"
                             className="flex input input-bordered"
                             type="text"
-                            name="title"
+                            name="cardId"
                         />
-                        <input
-                            placeholder="Question"
-                            className="flex input input-bordered"
-                            type="text"
-                            name="question"
-                        />
-                        <input
-                            placeholder="Réponse"
-                            className="flex input input-bordered"
-                            type="text"
-                            name="answer"
-                        />
-                        <select className="flex input input-bordered" name="categoryName">
-                            <option value="">Sélectionnez une catégorie</option>
-                            <option value="TEST">Test</option>
-                            <option value="JAVA">Java</option>
-                            <option value="HTML">HTML</option>
-                            <option value="MAVEN">Maven</option>
-                        </select>
                     </div>
                     <div className="m-auto w-fit">
                         <button
@@ -191,7 +172,9 @@ function Cards() {
                             className="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
                         >Ajouter la carte</button>
                     </div>
+
                 </form>
+
             </ReactModal>
 
 
@@ -199,4 +182,4 @@ function Cards() {
     )
 }
 
-export default Cards;
+export default Tiroir;

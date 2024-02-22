@@ -3,7 +3,7 @@ function Cadre(){
         <>
             <div className="p-8">
                 <div className="px-6">
-                    <div className="center">
+                    <div className="">
                         <a href="/"><h1>Application FlashCards</h1></a>
                     </div>
                     <div>
