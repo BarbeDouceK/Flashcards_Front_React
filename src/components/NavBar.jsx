@@ -20,7 +20,7 @@ function NavBar() {
                             <a href="/play">Play</a>
                         </li>
                         <li>
-                            <a href="/cards">Play</a>
+                            <a href="/cards">Cards</a>
                         </li>
                     </ul>
                 </div>
