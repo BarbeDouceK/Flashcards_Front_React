@@ -17,11 +17,9 @@ function CardServiceApi () {
 
     const [pagepoint,setPagePoint] = useState(`?page=${pageable.pageNumber}`);
 
-    const changePage = (index=-1) => {
-        if(index !== -1) {
-            setPagePoint(`?page=${index}`)
-            setPage({...pageable,pageNumber:index});
-        }
+    const changePage = (index) => {
+        setPagePoint(`?page=${index}`)
+        setPage({...pageable,pageNumber:index});
     }
 
     const [isModalOpen, setModalOpen] = useState(false)
@@ -33,19 +31,10 @@ function CardServiceApi () {
         answer: ""
     });
 
-    const [load, setLoad] = useState(true);
-
     useEffect( () => {
         monService.get(endpoint+pagepoint)
             .then((response) =>{
                 setCards(response.content)
-                if (load) {
-                    setPage({
-                        pageNumber:response.pageable.pageNumber,
-                        totalPages:response.totalPages
-                    })
-                    setLoad(false);
-                }
             })
             .catch((error) =>{
                 alert(error.message)
@@ -57,14 +46,30 @@ function CardServiceApi () {
         if(newCard.title !== ""){
             monService.post(endpoint, newCard)
             .then( (data) => {
-                setNewCard( (prevCards) => [...prevCards, data]);
+                console.log(data);
+                changePage(pageable.pageNumber);
             })
             .catch((error) => alert(error.message))
             .finally(()  => console.log('Post terminé'))
         } 
-    }, [newCard])
 
-    console.log(pageable);
+        monService.get(endpoint+pagepoint)
+            .then((response) =>{
+                if (response.empty) {
+                    window.location.replace("http://localhost:5173/cards")
+                } else {
+                    setCards(response.content)
+                }
+                setPage({
+                    ...pageable,
+                    totalPages:response.totalPages
+                })
+            })
+            .catch((error) =>{
+                alert(error.message)
+            })
+            .finally( () => console.log('Get terminé'))
+    }, [newCard])
 
     // Config. React-modal
 
@@ -100,9 +105,7 @@ function CardServiceApi () {
         monService.delete(endpoint+"/"+cardId)
             .then(() => {
                 console.log(`Produit avec ID ${cardId} supprimé`)
-                setCards((prevCards) => 
-                    prevCards.filter((card) => card.id !== cardId)
-                );
+                setNewCard({...newCard,title:""});
             })
             .catch(error => alert(error.message));
     }
@@ -116,7 +119,7 @@ function CardServiceApi () {
                 </div>
                 <div className="grid grid-cols-3 gap-10 mb-5">
                     <button className="btn btn-outline btn-inf" disabled={pageable.pageNumber==0} onClick={() => changePage(pageable.pageNumber-1)}>T---</button>
-                    <div className="center" >{Number(pageable.pageNumber)+1}</div>
+                    <div className="center" >{pageable.pageNumber+1}</div>
                     <button className="btn btn-outline btn-inf" disabled={pageable.pageNumber==(pageable.totalPages-1)} onClick={() => changePage(pageable.pageNumber+1)}>---T</button>
                 </div>
                 <table className="table table-zebra border">
