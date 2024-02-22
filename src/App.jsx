@@ -2,8 +2,8 @@ import './App.css'
 import HomePage from './components/pages/HomePage.jsx'
 import ApiRestIndex from './components/pages/ApiRestIndex.jsx'
 import Cards from './components/pages/Cards.jsx'
-import Cards from './components/pages/backmvc/BackCards.jsx'
-import Cards from './components/pages/Play.jsx'
+import BackCards from './components/pages/backmvc/BackCards.jsx'
+import Play from './components/pages/Play.jsx'
 
 function App() {
 
