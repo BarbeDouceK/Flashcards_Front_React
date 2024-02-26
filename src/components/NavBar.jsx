@@ -11,6 +11,9 @@ function NavBar() {
                         <li>
                             <a href="/cards">Cards</a>
                         </li>
+                        <li>
+                            <a href="/card">Card</a>
+                        </li>
                     </ul>
                 </div>
             </div>
