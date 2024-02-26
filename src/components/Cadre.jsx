@@ -1,3 +1,5 @@
+import NavBar from "./NavBar";
+
 function Cadre(){
     return(
         <>

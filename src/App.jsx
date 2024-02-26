@@ -5,13 +5,14 @@ import NavBar from './components/NavBar.jsx'
 
 import Cards from './components/pages/Cards.jsx'
 import Play from './components/pages/Play.jsx'
+import Cadre from './components/Cadre.jsx'
 
 function App() {
 
 
   return (
     <>
-      <NavBar/>
+      <Cadre/>
       <Router>
         <Routes>
           <Route path="/" element={<HomePage/>}></Route>
