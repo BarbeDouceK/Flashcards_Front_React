@@ -12,13 +12,14 @@ function App() {
 
 	return (
 		<>
+    <a href="/"><h1>Application FlashCards</h1></a>
 		<div className="p-8">
 			<div className="px-6">
 				<div className="">
-					<a href="/"><h1>Application FlashCards</h1></a>
+					
 				</div>
 				<div>
-					<NavBar />
+					<NavBar/>
 					<Router>
 						<Routes>
 							<Route path="/" element={<HomePage/>}></Route>
