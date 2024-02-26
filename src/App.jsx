@@ -6,6 +6,7 @@ import NavBar from './components/NavBar.jsx'
 import Cards from './components/pages/Cards.jsx'
 import Card from './components/pages/Card.jsx'
 import { Authentification } from './components/pages/Authentification.jsx'
+import Tiroir from './components/pages/Tiroir.jsx'
 
 function App() {
 
@@ -22,6 +23,7 @@ function App() {
 							<Route path="/cards" element={<Cards/>}></Route>
 							<Route path="/card" element={<Card cardId={1} />}></Route>
 							<Route path="/auth" element={<Authentification/>}></Route>
+							<Route path="/tiroir" element={<Tiroir/>}></Route>
 							{/* <Route path="/PATH" element={<PAGE/>}></Route> */}
 						</Routes>
 					</Router>

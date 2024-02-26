@@ -17,6 +17,9 @@ function NavBar() {
                         <li>
                             <a href="/auth">Authentification</a>
                         </li>
+                        <li>
+                            <a href="/tiroir">Vos cartes</a>
+                        </li>
                     </ul>
                 </div>
             </div>
