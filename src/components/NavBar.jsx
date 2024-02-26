@@ -11,6 +11,9 @@ function NavBar() {
                         <li>
                             <a href="/cards">Cards</a>
                         </li>
+                        <li>
+                            <a href="/auth">Authentification</a>
+                        </li>
                     </ul>
                 </div>
             </div>

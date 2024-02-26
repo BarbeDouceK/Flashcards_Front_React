@@ -2,6 +2,13 @@ import axios from "axios";
 
 class ApiService {
 
+    headers() {
+        const user = localStorage.getItem('authToken');
+        return user ? 
+            { headers: { Authorization: `Bearer ${JSON.parse(user).token}` }} : 
+            {}
+    }
+
     constructor(baseURL) {
         this.api = axios.create({baseURL});
     }
@@ -19,12 +26,17 @@ class ApiService {
 
     // Méthode POST
     async post(endpoint = '', objectToSave) {
+        console.log(objectToSave);
         try{
-            const response = await this.api.post(endpoint, objectToSave);
+            const response = await this.api.post(endpoint, objectToSave,this.headers());
             return response.data;
         } catch (error){
-            console.error('Erreur lors du POST !: ' ,error)
-            throw error;
+            if (error.code == "ERR_BAD_REQUEST") {
+                console.log(error.message);
+            } else {
+                console.error('Erreur lors du POST !: ' ,error)
+                throw error;
+            }
         }
     }
 
