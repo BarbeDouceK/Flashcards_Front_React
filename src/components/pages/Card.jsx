@@ -1,15 +1,19 @@
-function Card(cardId) {
+import { useEffect, useState } from "react";
+import ApiService from "../../service/ApiService";
 
-    const monService = new ApiService("http://localhost:8080/api/v1/");
+function Card({cardId}) {
 
-    const endpoint = "card";
+    const api = new ApiService("http://localhost:8080/api/v1/cards");
+
+    const endpoint = "1";
 
     const [card, setCard] = useState([]);
 
     useEffect( () => {
-        monService.get(endpoint)
+        api.get(endpoint)
             .then((response) =>{
-                setCard(response.content)
+                console.log(response);
+                setCard(response)
             })
             .catch((error) =>{
                 alert(error.message)
@@ -18,7 +22,6 @@ function Card(cardId) {
 
     return (
     <>
-        <h1>TEST TEST TEST</h1>
         <table className="table table-zebra border">
             <thead>
                 <tr>
@@ -30,21 +33,12 @@ function Card(cardId) {
                 </tr>
             </thead>
             <tbody>
-                {cards.map((card) => (
                     <tr key={card.id}>
                         <td>{card.title}</td>
                         <td>{card.categoryName}</td>
                         <td>{card.question}</td>
                         <td>{card.answer}</td>
-                        <td>
-                            <button
-                                onClick={() => { deleteCard(card.id) }}
-                                className="btn btn-error m-auto"
-                            >Supprimer</button>
-                        </td>
                     </tr>
-                )
-                )}
             </tbody>
         </table>
         <div class="p-6 max-w-sm mx-auto bg-white rounded-xl shadow-lg flex items-center space-x-4">

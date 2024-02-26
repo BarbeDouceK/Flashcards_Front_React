@@ -24,7 +24,7 @@ function App() {
 						<Routes>
 							<Route path="/" element={<HomePage/>}></Route>
 							<Route path="/cards" element={<Cards/>}></Route>
-							<Route path="/card" element={<Card/>}></Route>
+							<Route path="/card" element={<Card cardId={1} />}></Route>
 							<Route path="/auth" element={<Authentification/>}></Route>
 							{/* <Route path="/PATH" element={<PAGE/>}></Route> */}
 						</Routes>
