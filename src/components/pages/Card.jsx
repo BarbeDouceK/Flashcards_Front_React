@@ -18,6 +18,7 @@ function Card(cardId) {
 
     return (
     <>
+        <h1>TEST TEST TEST</h1>
         <table className="table table-zebra border">
             <thead>
                 <tr>
