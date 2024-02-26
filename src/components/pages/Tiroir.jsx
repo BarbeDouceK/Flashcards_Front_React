@@ -6,7 +6,7 @@ import ReactModal from "react-modal";
 function Tiroir() {
 
     const api = new ApiService("http://localhost:8080/api/v1/")
-    const endpoint = "passages/user/";
+    const endpoint = "passages/user/"+JSON.parse(localStorage.getItem('authToken')).user.id;
 
     const [passages, setPassages] = useState([]);
     const [pageable, setPage] = useState({
@@ -16,62 +16,56 @@ function Tiroir() {
 
     const [pagepoint, setPagePoint] = useState(`?page=${pageable.pageNumber}`);
 
-    const changePage = (index = -1) => {
-        if (index !== -1) {
-            setPagePoint(`?page=${index}`)
-            setPage({ ...pageable, pageNumber: index });
-        }
+    const changePage = (index) => {
+        setPagePoint(`?page=${index}`)
+        setPage({ ...pageable, pageNumber: index });
     }
 
     const [isModalOpen, setModalOpen] = useState(false)
 
     const [newPassage, setNewPassage] = useState({
-        categoryName: "",
-        title: "",
-        question: "",
-        answer: "",
-        niveau: "",
-        dateUpdate: ""
+        userId:"",
+        cardId:""
     });
-
-    const [load, setLoad] = useState(true);
 
     useEffect(() => {
         api.get(endpoint + pagepoint)
             .then((response) => {
                 setPassages(response.content)
-                if (load) {
-                    setPage({
-                        pageNumber: response.pageable.pageNumber,
-                        totalPages: response.totalPages
-                    })
-                    setLoad(false);
-                }
+                console.log(response);
             })
             .catch((error) => {
                 alert(error.message)
             })
-            .finally(() => console.log('Get terminé'))
     }, [pageable]);
 
     useEffect(() => {
-        if (newPassage.title !== "") {
-            api.post(endpoint, newCard)
+        if (newPassage.userId !== "") {
+            api.post(endpoint, newPassage)
                 .then((data) => {
-                    setNewPassage((prevPassages) => [...prevPassages, data]);
+                    console.log(data);
+                    changePage(pageable.pageNumber);
                 })
                 .catch((error) => alert(error.message))
-                .finally(() => console.log('Post terminé'))
         }
+
+        api.get(endpoint + pagepoint)
+            .then((response) => {
+                if (response.empty) {
+                    window.location.replace("http://localhost:5173/tiroir")
+                } else {
+                    setPassages(response.content)
+                }
+                setPage({
+                    ...pageable,
+                    totalPages: response.totalPages
+                })
+            })
+            .catch((error) => {
+                alert(error.message)
+            })
     }, [newPassage])
 
-    console.log(pageable);
-
-    // Config. React-modal
-
-    // indispensable pour configurer mon pop-up. 
-    // Sera généralement exactement la mm ligne (sans rien modifier) sur tous les projets React
-    // 'root' est l'id de la div sur laquelle on se 'branchera' ___ ce sera 'root' sauf si modifier après création du projet / Voir le index.html
     ReactModal.setAppElement('#root');
 
     const openModal = () => {
@@ -83,27 +77,22 @@ function Tiroir() {
     }
 
     const handleSubmit = (e) => {
-        // A mettre si je veux éviter que le composant se recharge
         e.preventDefault()
 
         const formData = new FormData(e.target)
 
         setNewPassage({
-            cardId: formData.get('cardId'),
-            niveau: formData.get('title'),
-            dateUpdate: "",
-            userId: ""
+            userId: formData.get('user'),
+            cardId: formData.get('card')
         })
         closeModal();
     }
 
-    const deleteCard = (PassageId) => {
-        api.delete(endpoint + "/" + PassageId)
+    const deletePassage = (passageId) => {
+        api.delete("passages/"+passageId)
             .then(() => {
-                console.log(`Passage avec ID ${PassageId} supprimé`)
-                setPassages((prevPassage) =>
-                    prevPassage.filter((Passage) => Passage.id !== PassageId)
-                );
+                console.log(`Passage avec ID ${passageId} supprimé`)
+                setNewPassage({ ...newPassage, userId: "" });
             })
             .catch(error => alert(error.message));
     }
@@ -113,7 +102,7 @@ function Tiroir() {
             <h1>Les Passages récuperés en passant par mon API :</h1>
             <div className="m-10 w-4/6 m-auto">
                 <div className="flex justify-end mb-5">
-                    <button className="btn btn-outline btn-inf" onClick={openModal}>Ajouter un Passage ? mdr non</button>
+                    <button className="btn btn-outline btn-inf" onClick={openModal}>Ajouter un Passage</button>
                 </div>
                 <div className="grid grid-cols-3 gap-10 mb-5">
                     <button className="btn btn-outline btn-inf" disabled={pageable.pageNumber == 0} onClick={() => changePage(pageable.pageNumber - 1)}>T---</button>
