@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import ApiService from "../../service/ApiService";
 import ReactModal from "react-modal";
 
-function Cards() {
+function CardServiceApi() {
 
     const monService = new ApiService("http://localhost:8080/api/v1/")
     const endpoint = "cards";
@@ -17,11 +17,9 @@ function Cards() {
 
     const [pagepoint, setPagePoint] = useState(`?page=${pageable.pageNumber}`);
 
-    const changePage = (index = -1) => {
-        if (index !== -1) {
-            setPagePoint(`?page=${index}`)
-            setPage({ ...pageable, pageNumber: index });
-        }
+    const changePage = (index) => {
+        setPagePoint(`?page=${index}`)
+        setPage({ ...pageable, pageNumber: index });
     }
 
     const [isModalOpen, setModalOpen] = useState(false)
@@ -33,19 +31,10 @@ function Cards() {
         answer: ""
     });
 
-    const [load, setLoad] = useState(true);
-
     useEffect(() => {
         monService.get(endpoint + pagepoint)
             .then((response) => {
                 setCards(response.content)
-                if (load) {
-                    setPage({
-                        pageNumber: response.pageable.pageNumber,
-                        totalPages: response.totalPages
-                    })
-                    setLoad(false);
-                }
             })
             .catch((error) => {
                 alert(error.message)
@@ -57,14 +46,30 @@ function Cards() {
         if (newCard.title !== "") {
             monService.post(endpoint, newCard)
                 .then((data) => {
-                    setNewCard((prevCards) => [...prevCards, data]);
+                    console.log(data);
+                    changePage(pageable.pageNumber);
                 })
                 .catch((error) => alert(error.message))
                 .finally(() => console.log('Post terminé'))
         }
-    }, [newCard])
 
-    console.log(pageable);
+        monService.get(endpoint + pagepoint)
+            .then((response) => {
+                if (response.empty) {
+                    window.location.replace("http://localhost:5173/cards")
+                } else {
+                    setCards(response.content)
+                }
+                setPage({
+                    ...pageable,
+                    totalPages: response.totalPages
+                })
+            })
+            .catch((error) => {
+                alert(error.message)
+            })
+            .finally(() => console.log('Get terminé'))
+    }, [newCard])
 
     // Config. React-modal
 
@@ -100,9 +105,7 @@ function Cards() {
         monService.delete(endpoint + "/" + cardId)
             .then(() => {
                 console.log(`Produit avec ID ${cardId} supprimé`)
-                setCards((prevCards) =>
-                    prevCards.filter((card) => card.id !== cardId)
-                );
+                setNewCard({ ...newCard, title: "" });
             })
             .catch(error => alert(error.message));
     }
@@ -116,7 +119,7 @@ function Cards() {
                 </div>
                 <div className="grid grid-cols-3 gap-10 mb-5">
                     <button className="btn btn-outline btn-inf" disabled={pageable.pageNumber == 0} onClick={() => changePage(pageable.pageNumber - 1)}>T---</button>
-                    <div className="center" >{Number(pageable.pageNumber) + 1}</div>
+                    <div className="center" >{pageable.pageNumber + 1}</div>
                     <button className="btn btn-outline btn-inf" disabled={pageable.pageNumber == (pageable.totalPages - 1)} onClick={() => changePage(pageable.pageNumber + 1)}>---T</button>
                 </div>
                 <table className="table table-zebra border">
@@ -191,7 +194,9 @@ function Cards() {
                             className="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
                         >Ajouter la carte</button>
                     </div>
+
                 </form>
+
             </ReactModal>
 
 
@@ -199,4 +204,4 @@ function Cards() {
     )
 }
 
-export default Cards;
+export default CardServiceApi;

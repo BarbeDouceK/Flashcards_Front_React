@@ -4,25 +4,31 @@ import HomePage from './components/pages/HomePage.jsx'
 import NavBar from './components/NavBar.jsx'
 
 import Cards from './components/pages/Cards.jsx'
-import Play from './components/pages/Play.jsx'
-import Cadre from './components/Cadre.jsx'
 
 function App() {
 
 
-  return (
-    <>
-      <Cadre/>
-      <Router>
-        <Routes>
-          <Route path="/" element={<HomePage/>}></Route>
-          <Route path="/api/v1/cards" element={<Cards/>}></Route>
-          <Route path="/play" element={<Play/>}></Route>
-          {/* <Route path="/PATH" element={<PAGE/>}></Route> */}
-        </Routes>
-      </Router>
-    </>
-  )
+	return (
+		<>
+		<div className="p-8">
+			<div className="px-6">
+				<div className="">
+					<a href="/"><h1>Application FlashCards</h1></a>
+				</div>
+				<div>
+					<NavBar />
+					<Router>
+						<Routes>
+							<Route path="/" element={<HomePage/>}></Route>
+							<Route path="/cards" element={<Cards/>}></Route>
+							{/* <Route path="/PATH" element={<PAGE/>}></Route> */}
+						</Routes>
+					</Router>
+				</div>
+			</div>
+		</div>
+		</>
+	)
 }
 
 export default App
