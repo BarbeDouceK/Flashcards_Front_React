@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import ApiService from "../../service/ApiService";
 import ReactModal from "react-modal";
 
-function CardServiceApi () {
+function Cards () {
 
     const monService = new ApiService("http://localhost:8080/api/v1/")
     const endpoint = "cards";
@@ -204,4 +204,4 @@ function CardServiceApi () {
     )
 }
 
-export default CardServiceApi;
+export default Cards;
