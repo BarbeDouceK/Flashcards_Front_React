@@ -39,7 +39,6 @@ function Cards () {
             .catch((error) =>{
                 alert(error.message)
             })
-            .finally( () => console.log('Get terminé'))
     },[pageable]);
 
     useEffect( () => {
@@ -50,7 +49,6 @@ function Cards () {
                 changePage(pageable.pageNumber);
             })
             .catch((error) => alert(error.message))
-            .finally(()  => console.log('Post terminé'))
         } 
 
         monService.get(endpoint+pagepoint)
@@ -68,7 +66,6 @@ function Cards () {
             .catch((error) =>{
                 alert(error.message)
             })
-            .finally( () => console.log('Get terminé'))
     }, [newCard])
 
     // Config. React-modal
