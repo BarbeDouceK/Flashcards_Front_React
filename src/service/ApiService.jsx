@@ -4,8 +4,10 @@ class ApiService {
 
     headers() {
         const user = localStorage.getItem('authToken');
-        return user ? 
-            { headers: { Authorization: `Bearer ${JSON.parse(user).token}` }} : 
+        const token = JSON.parse(localStorage.getItem('authToken') || '{}')?.token
+        console.log(token);
+        return token ? 
+            { headers: { Authorization: `Bearer ${token}` }} : 
             {}
     }
 
@@ -26,7 +28,6 @@ class ApiService {
 
     // Méthode POST
     async post(endpoint = '', objectToSave) {
-        console.log(objectToSave);
         try{
             const response = await this.api.post(endpoint, objectToSave,this.headers());
             return response.data;
@@ -35,8 +36,8 @@ class ApiService {
                 console.log(error.message);
             } else {
                 console.error('Erreur lors du POST !: ' ,error)
-                throw error;
             }
+            throw error;
         }
     }
 
