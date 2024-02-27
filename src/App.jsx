@@ -8,6 +8,7 @@ import Card from './components/pages/Card.jsx'
 import { Authentification } from './components/pages/Authentification.jsx'
 import Tiroir from './components/pages/Tiroir.jsx'
 import Footer from './components/Footer.jsx'
+import { Header } from './components/Header.jsx'
 
 function App() {
 
@@ -15,13 +16,12 @@ function App() {
 	return (
 		<>
 
-			<div className="relative flex min-w-screen flex-col justify-left py-6 sm:py-12">
-				<img class="logo flex"></img>
-				<a href="/"><h1>Application FlashCards</h1></a>
-				<img class="profil"></img>
+			<div className="mb-10 flex flex-row">
+				<Header/>
 			</div>
 			<div className="relative px-6 pt-10 pb-8 shadow-xl ring-1 ring-gray-900/5 sm:mx-auto sm:max-w-lg sm:rounded-lg sm:px-10">
 				<NavBar />
+				<div className='separator'></div>
 				<Router>
 					<Routes>
 						<Route path="/" element={<HomePage />}></Route>
@@ -33,7 +33,7 @@ function App() {
 					</Routes>
 				</Router>
 			</div>
-			<div className='' class="footer">
+			<div className=''>
 				<Footer/>
 			</div>
 		</>
