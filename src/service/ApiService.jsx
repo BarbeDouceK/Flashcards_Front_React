@@ -5,7 +5,6 @@ class ApiService {
     headers() {
         /* const user = localStorage.getItem('authToken'); */
         const token = JSON.parse(localStorage.getItem('authToken') || '{}')?.token
-        console.log(token);
         return token ? 
             { headers: { Authorization: `Bearer ${token}` }} : 
             {}
