@@ -2,7 +2,6 @@ function NavBar() {
 
     return (
         <>
-            <div className="navbar bg-base-100 border-r mr-5">
                 <div className="navbar-left hidden lg:flex">
                     <ul className="menu menu-vertical px-1">
                         <li>
@@ -22,7 +21,6 @@ function NavBar() {
                         </li>
                     </ul>
                 </div>
-            </div>
         </>
     );
 }
