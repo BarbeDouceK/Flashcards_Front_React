@@ -19,14 +19,14 @@ function App() {
 			<div className="mb-10 flex flex-row">
 				<Header/>
 			</div>
-			<div className="relative px-6 pt-10 pb-8 shadow-xl ring-1 ring-gray-900/5 sm:mx-auto sm:max-w-lg sm:rounded-lg sm:px-10">
+			<div className="flex px-6 pt-10 pb-8 shadow-xl ring-1 ring-gray-900/5 sm:mx-auto sm:max-w-lg sm:rounded-lg sm:px-10">
 				<NavBar />
 				<div className='separator'></div>
 				<Router>
 					<Routes>
 						<Route path="/" element={<HomePage />}></Route>
 						<Route path="/cards" element={<Cards />}></Route>
-						<Route path="/card/:id" element={<Card />}></Route>
+						<Route path="/card/:id" element={<Card/>}></Route>
 						<Route path="/auth" element={<Authentification />}></Route>
 						<Route path="/tiroir" element={<Tiroir />}></Route>
 						{/* <Route path="/PATH" element={<PAGE/>}></Route> */}

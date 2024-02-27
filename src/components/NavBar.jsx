@@ -11,7 +11,7 @@ function NavBar() {
                             <a href="/cards">Cards</a>
                         </li>
                         <li>
-                            <a href="/cards/1">Card n°1</a>
+                            <a href="/card/1">Card n°1</a>
                         </li>
                         <li>
                             <a href="/auth">Authentification</a>
