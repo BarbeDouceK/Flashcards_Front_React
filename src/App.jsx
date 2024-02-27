@@ -19,9 +19,10 @@ function App() {
 			<div className="mb-10 flex flex-row">
 				<Header/>
 			</div>
-			<div className="flex px-6 pt-10 pb-8 shadow-xl ring-1 ring-gray-900/5 sm:mx-auto sm:max-w-lg sm:rounded-lg sm:px-10">
+			<div className="flex px-6 pt-10 pb-8 shadow-xl ring-1 ring-gray-900/5 sm:rounded-lg sm:px-10">
 				<NavBar />
-				<div className='separator'></div>
+				<div className='separator border-r'></div>
+				<div className='grow min-w-0'>
 				<Router>
 					<Routes>
 						<Route path="/" element={<HomePage />}></Route>
@@ -32,6 +33,7 @@ function App() {
 						{/* <Route path="/PATH" element={<PAGE/>}></Route> */}
 					</Routes>
 				</Router>
+				</div>
 			</div>
 			<div className=''>
 				<Footer/>

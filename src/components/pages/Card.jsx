@@ -24,13 +24,13 @@ function Card() {
     return (
     <>
 
-        <div class="p-6 max-w-sm mx-auto bg-white rounded-xl shadow-lg flex items-center space-x-4">
-            <div class="shrink-0">
-                <img class="h-12 w-12" src="/vite.svg" alt="Logo"/>
+        <div className="p-6 max-w-sm mx-auto bg-white rounded-xl shadow-lg flex items-center space-x-4">
+            <div className="shrink-0">
+                <img className="h-12 w-12" src="/vite.svg" alt="Logo"/>
             </div>
             <div>
-                <div class="text-xl font-medium text-black">{card.question}</div>
-                <p class="text-slate-500">{card.answer}</p>
+                <div className="text-xl font-medium text-black">{card.question}</div>
+                <p className="text-slate-500">{card.answer}</p>
             </div>
         </div>
     </>

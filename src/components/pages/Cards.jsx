@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import ApiService from "../../service/ApiService";
 import ReactModal from "react-modal";
+import { Router } from "react-router-dom";
 
 function Cards() {
 
@@ -107,10 +108,18 @@ function Cards() {
             .catch(error => alert(error.message));
     }
 
+    const viewCard = (cardId) => {
+        monService.get(endpoint + "/" + cardId)
+            .then(() => {
+                console.log("ID : " + cardId + " Objet : ");
+                // Je veux Reload le composant de Router : La Route Card/cardId
+            })
+            .catch(error => alert(error.message));
+    }
+
     return (
         <>
-            <h1>Les cartes récupérés en passant par mon service: </h1>
-            <div className="m-10 w-4/6 m-auto">
+            <div className="m-10">
                 <div className="flex justify-end mb-5">
                     <button className="btn btn-outline btn-inf" onClick={openModal}>Ajouter une nouvelle carte</button>
                 </div>
@@ -136,6 +145,12 @@ function Cards() {
                                 <td>{card.categoryName}</td>
                                 <td>{card.question}</td>
                                 <td>{card.answer}</td>
+                                <td>
+                                    <button
+                                        onClick={() => { viewCard(card.id) }}
+                                        className="btn btn-link m-auto"
+                                    >Afficher</button>
+                                </td>
                                 <td>
                                     <button
                                         onClick={() => { deleteCard(card.id) }}
