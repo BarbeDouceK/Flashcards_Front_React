@@ -7,15 +7,20 @@ function Tiroir() {
 
     const api = new ApiService("http://localhost:8080/api/v1/")
     const endpoint = "passages/user/"+JSON.parse(localStorage.getItem('authToken')).user.id;
+    const cardpoint = "cards"
 
     const [passages, setPassages] = useState([]);
+    const [cards, setCards] = useState([])
+    const [newPassage, setNewPassage] = useState({
+        cardId:"",
+        userId:""
+    });
+
     const [pageable, setPage] = useState({
         pageNumber: 0,
         totalPages: 0
     });
-
     const [pagepoint, setPagePoint] = useState(`?page=${pageable.pageNumber}`);
-
     const changePage = (index) => {
         setPagePoint(`?page=${index}`)
         setPage({ ...pageable, pageNumber: index });
@@ -23,24 +28,30 @@ function Tiroir() {
 
     const [isModalOpen, setModalOpen] = useState(false)
 
-    const [newPassage, setNewPassage] = useState({
-        userId:"",
-        cardId:""
-    });
-
     useEffect(() => {
         api.get(endpoint + pagepoint)
             .then((response) => {
                 setPassages(response.content)
-                console.log(response);
             })
             .catch((error) => {
                 alert(error.message)
             })
+
+        passages.map((passage) => passage.cardId).forEach(cardId => {
+            api.get(cardpoint+"/"+cardId).then((response) => {
+                cards.push({
+                    answer: response.answer,
+                    categoryName: response.categoryName,
+                    id: response.id,
+                    question: response.question,
+                    title: response.title
+                })
+            })
+        })
     }, [pageable]);
 
     useEffect(() => {
-        if (newPassage.userId !== "") {
+        if (newPassage.cardId !== "") {
             api.post(endpoint, newPassage)
                 .then((data) => {
                     console.log(data);
@@ -92,7 +103,7 @@ function Tiroir() {
         api.delete("passages/"+passageId)
             .then(() => {
                 console.log(`Passage avec ID ${passageId} supprimé`)
-                setNewPassage({ ...newPassage, userId: "" });
+                setNewPassage({ ...newPassage, cardId: "" });
             })
             .catch(error => alert(error.message));
     }
@@ -120,9 +131,9 @@ function Tiroir() {
                         </tr>
                     </thead>
                     <tbody>
-                        {passages.map((passage) => (
+                        {passages.map((passage,index) => (
                             <tr key={passage.id}>
-                                <td>{passage.cardId}</td>
+                                <td>{cards.at(index).title}</td>
                                 <td>{passage.niveau}</td>
                                 <td>{passage.dateUpdate}</td>
                                 <td>{passage.userId}</td>
@@ -132,9 +143,11 @@ function Tiroir() {
                                         className="btn btn-error m-auto"
                                     >Supprimer</button>
                                 </td>
+                                {console.log(cards.at(index))}
                             </tr>
                         )
                         )}
+
                     </tbody>
                 </table>
             </div>
