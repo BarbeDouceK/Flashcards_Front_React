@@ -6,13 +6,16 @@ import ReactModal from "react-modal";
 function Tiroir() {
 
     const api = new ApiService("http://localhost:8080/api/v1/")
-    const endpoint = "passages/user/"+JSON.parse(localStorage.getItem('authToken')).user.id;
+    const userId = JSON.parse(localStorage.getItem('authToken')).user.id;
+    const endpoint = "passages/user/" + userId;
     const cardpoint = "cards"
 
     const [passages, setPassages] = useState([]);
     const [newPassage, setNewPassage] = useState({
-        cardId:"",
-        userId:""
+        card:{
+            id: 0
+        },
+        userId: userId
     });
 
     const [pageable, setPage] = useState({
@@ -23,6 +26,19 @@ function Tiroir() {
     const changePage = (index) => {
         setPagePoint(`?page=${index}`)
         setPage({ ...pageable, pageNumber: index });
+    }
+
+    const [cards, setCards] = useState([]);
+    const [cardPageable, setCardPageable] = useState({
+        pageNumber: 0,
+        totalPages: 0
+    });
+    const [cardpagepoint, setCardPagePoint] = useState(`?page=${cardPageable.pageNumber}`);
+    const changeCardPage = (index,event) => {
+        event.preventDefault();
+        setCardPagePoint(`?page=${index}`)
+        setCardPageable({ ...cardPageable, pageNumber: index });
+        setModalOpen(true)
     }
 
     const [isModalOpen, setModalOpen] = useState(false)
@@ -38,10 +54,26 @@ function Tiroir() {
     }, [pageable]);
 
     useEffect(() => {
-        if (newPassage.cardId !== "") {
-            api.post(endpoint, newPassage)
+        api.get(cardpoint + cardpagepoint)
+            .then((response) => {
+                setCards(response.content)
+                if (response.totalPages !== cardPageable.totalPages) {
+                    setCardPageable({
+                        ...cardPageable,
+                        totalPages: response.totalPages
+                    })
+                }
+            })
+            .catch((error) => {
+                alert(error.message)
+            })
+    }, [cardPageable]);
+
+    useEffect(() => {
+        if (newPassage.card.id !== 0) {
+            api.post("passages", newPassage)
                 .then((data) => {
-                    console.log(data);
+                    newPassage.card.id = 0; // pour ne pas ajouter la carte en continue
                     changePage(pageable.pageNumber);
                 })
                 .catch((error) => alert(error.message))
@@ -76,18 +108,22 @@ function Tiroir() {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-
         const formData = new FormData(e.target)
-
-        setNewPassage({
-            userId: formData.get('user'),
-            cardId: formData.get('card')
-        })
-        closeModal();
+        if(formData.has("cardId")) {
+            setNewPassage({
+                ...newPassage,
+                card: {
+                    id: formData.get('cardId')
+                }
+            })
+            closeModal();
+        } else {
+            console.log("card ID incorrect");
+        }
     }
 
     const deletePassage = (passageId) => {
-        api.delete("passages/"+passageId)
+        api.delete("passages/" + passageId)
             .then(() => {
                 console.log(`Passage avec ID ${passageId} supprimé`)
                 setNewPassage({ ...newPassage, cardId: "" });
@@ -118,7 +154,7 @@ function Tiroir() {
                         </tr>
                     </thead>
                     <tbody>
-                        {passages.map((passage,index) => (
+                        {passages.map((passage) => (
                             <tr key={passage.id}>
                                 <td>{passage.card.title}</td>
                                 <td>{passage.niveau}</td>
@@ -143,16 +179,35 @@ function Tiroir() {
                 onRequestClose={closeModal}
                 className="w-fit h-fit border p-10 mx-auto absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gray-50"
             >
-                <p className="font-semibold"> Ajouter votre passage ?: </p>
+                <p className="font-semibold"> Ajouter une carte à votre tiroir: </p>
 
                 <form onSubmit={handleSubmit}>
-                    <div className="grid grid-cols-2 gap-4 mb-5">
-                        <input
-                            placeholder="Id de la carte"
-                            className="flex input input-bordered"
-                            type="text"
-                            name="cardId"
-                        />
+                    <div className="grid grid-cols-1 gap-4 mb-5">
+                        <select defaultValue="" className="select w-full max-w-xs" name="cardId">
+                            <option disabled value="">Sélectionnez une carte</option>
+                            {cards.map(card => (
+                                <option key={card.id} value={card.id}>{card.title}</option>
+                            ))}
+                        </select>
+                        <div className="text-center">
+                            Page {cardPageable.pageNumber + 1} sur {cardPageable.totalPages}
+                        </div>
+                        <div className="flex justify-center mt-4">
+                            <button
+                                className="btn btn-secondary mr-2"
+                                onClick={(e) => changeCardPage(cardPageable.pageNumber - 1,e)}
+                                disabled={cardPageable.pageNumber == 0}
+                            >
+                                Previous
+                            </button>
+                            <button
+                                className="btn btn-secondary"
+                                onClick={(e) => changeCardPage(cardPageable.pageNumber + 1,e)}
+                                disabled={cardPageable.pageNumber == (cardPageable.totalPages - 1)}
+                            >
+                                Next
+                            </button>
+                        </div>
                     </div>
                     <div className="m-auto w-fit">
                         <button
