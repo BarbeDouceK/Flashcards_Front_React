@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import ApiService from "../../service/ApiService";
+import { useParams } from "react-router-dom";
 
-function Card({cardId}) {
+function Card() {
 
     const api = new ApiService("http://localhost:8080/api/v1/cards");
-
-    const endpoint = "1";
+    let {id} = useParams();
+    const endpoint = id;
 
     const [card, setCard] = useState([]);
 
@@ -18,7 +19,7 @@ function Card({cardId}) {
             .catch((error) =>{
                 alert(error.message)
             })
-    });
+    },[]);
 
     return (
     <>

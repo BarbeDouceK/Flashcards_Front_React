@@ -10,7 +10,6 @@ function Tiroir() {
     const cardpoint = "cards"
 
     const [passages, setPassages] = useState([]);
-    const [cards, setCards] = useState([])
     const [newPassage, setNewPassage] = useState({
         cardId:"",
         userId:""
@@ -36,18 +35,6 @@ function Tiroir() {
             .catch((error) => {
                 alert(error.message)
             })
-
-        passages.map((passage) => passage.cardId).forEach(cardId => {
-            api.get(cardpoint+"/"+cardId).then((response) => {
-                cards.push({
-                    answer: response.answer,
-                    categoryName: response.categoryName,
-                    id: response.id,
-                    question: response.question,
-                    title: response.title
-                })
-            })
-        })
     }, [pageable]);
 
     useEffect(() => {
@@ -123,7 +110,7 @@ function Tiroir() {
                 <table className="table table-zebra border">
                     <thead>
                         <tr>
-                            <th>cardId</th>
+                            <th>cardTitle</th>
                             <th>niveau</th>
                             <th>dateUpdate</th>
                             <th>userId</th>
@@ -133,7 +120,7 @@ function Tiroir() {
                     <tbody>
                         {passages.map((passage,index) => (
                             <tr key={passage.id}>
-                                <td>{cards.at(index).title}</td>
+                                <td>{passage.card.title}</td>
                                 <td>{passage.niveau}</td>
                                 <td>{passage.dateUpdate}</td>
                                 <td>{passage.userId}</td>
@@ -143,7 +130,6 @@ function Tiroir() {
                                         className="btn btn-error m-auto"
                                     >Supprimer</button>
                                 </td>
-                                {console.log(cards.at(index))}
                             </tr>
                         )
                         )}
