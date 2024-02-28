@@ -2,14 +2,15 @@
 import { useEffect, useState } from "react";
 import ApiService from "../../service/ApiService";
 import ReactModal from "react-modal";
-import { Router } from "react-router-dom";
-
+import { CardCompo } from "./CardCompo";
+import Card from "./Card";
 function Cards() {
 
     const monService = new ApiService("http://localhost:8080/api/v1/");
     const endpoint = "cards";
 
 
+    const [card, setCard] = useState([]);
     const [cards, setCards] = useState([]);
     const [pageable, setPage] = useState({
         pageNumber: 0,
@@ -24,6 +25,7 @@ function Cards() {
     }
 
     const [isModalOpen, setModalOpen] = useState(false)
+    const [isPrintModalOpen, setPrintModalOpen] = useState(false)
 
     const [newCard, setNewCard] = useState({
         categoryName: "",
@@ -83,6 +85,13 @@ function Cards() {
     const closeModal = () => {
         setModalOpen(false)
     }
+    const openPrintModal = () => {
+        setPrintModalOpen(true)
+    }
+
+    const closePrintModal = () => {
+        setPrintModalOpen(false)
+    }
 
     const handleSubmit = (e) => {
         // A mettre si je veux éviter que le composant se recharge
@@ -108,13 +117,9 @@ function Cards() {
             .catch(error => alert(error.message));
     }
 
-    const viewCard = (cardId) => {
-        monService.get(endpoint + "/" + cardId)
-            .then(() => {
-                console.log("ID : " + cardId + " Objet : ");
-                // Je veux Reload le composant de Router : La Route Card/cardId
-            })
-            .catch(error => alert(error.message));
+    const viewCard = (card) => {
+        setCard(card);
+        openPrintModal(card);
     }
 
     return (
@@ -147,8 +152,8 @@ function Cards() {
                                 <td>{card.answer}</td>
                                 <td>
                                     <button
-                                        onClick={() => { viewCard(card.id) }}
-                                        className="btn btn-link m-auto"
+                                        onClick={() => {viewCard(card)}}
+                                        className="btn btn-outline"
                                     >Afficher</button>
                                 </td>
                                 <td>
@@ -163,6 +168,16 @@ function Cards() {
                     </tbody>
                 </table>
             </div>
+
+            <ReactModal
+                isOpen={isPrintModalOpen}
+                onRequestClose={closePrintModal}
+                className="w-fit h-fit border p-10 mx-auto absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gray-50"
+            >
+                <div className="gap-4 mb-5">
+                    <CardCompo card={card}/>
+                </div>
+            </ReactModal>
 
             <ReactModal
                 isOpen={isModalOpen}

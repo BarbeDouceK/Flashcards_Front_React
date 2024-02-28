@@ -2,7 +2,7 @@ function NavBar() {
 
     return (
         <>
-                <div className="navbar-left hidden lg:flex">
+                <div className="navbar-left">
                     <ul className="menu menu-vertical px-1">
                         <li>
                             <a href="/">HomePage</a>
