@@ -1,4 +1,8 @@
-function NavBar() {
+function NavBar({ userId }) {
+
+    const deconnect = () => {
+        localStorage.removeItem('auth')
+    }
 
     return (
         <>
@@ -10,17 +14,24 @@ function NavBar() {
                         <li>
                             <a href="/cards">Cards</a>
                         </li>
+                        {userId == 0 && <>
+                            <li>
+                                <a href="/auth">Authentification</a>
+                            </li>
+                        </>}
+                        {userId != 0 && <>
+                            <li>
+                                <a href="/tiroir">Vos cartes</a>
+                            </li>
+                            <li>
+                                <a href="/daily">Vos Dailys</a>
+                            </li>
+                            <li>
+                                <a href="/" onClick={deconnect}>Se déconnecter</a>
+                            </li>
+                        </>}
                         <li>
                             <a href="/card/1">Card n°1</a>
-                        </li>
-                        <li>
-                            <a href="/auth">Authentification</a>
-                        </li>
-                        <li>
-                            <a href="/tiroir">Vos cartes</a>
-                        </li>
-                        <li>
-                            <a href="/daily">Vos Dailys</a>
                         </li>
                     </ul>
                 </div>

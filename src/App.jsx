@@ -12,16 +12,20 @@ import { Header } from './components/Header.jsx'
 import { Daily } from './components/pages/Daily.jsx'
 
 function App() {
-
+	let userId;
+	try {
+		userId = JSON.parse(localStorage.getItem('auth')).user.id;
+	} catch(jsonParse) {
+		userId = 0;
+	}
 
 	return (
 		<>
-
 			<div className="mb-10 flex flex-row">
 				<Header/>
 			</div>
 			<div className="flex">
-				<NavBar />
+				<NavBar userId={userId} />
 				<div className='separator border-r'></div>
 				<div className='grow min-w-0'>
 				<Router>
