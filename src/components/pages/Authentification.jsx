@@ -21,7 +21,7 @@ export const Authentification = () => {
             }).then(response => {
                 setIsLoginIn("Connexion réussi !")
                 setLoginError("")
-                localStorage.setItem('authToken', JSON.stringify(response))
+                localStorage.setItem('auth', JSON.stringify(response))
                 location.replace("/")
             }).catch(error => {
                 localStorage.clear();
