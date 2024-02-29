@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import ApiService from "../../service/ApiService";
 import ReactModal from "react-modal";
 import { CardCompo } from "./CardCompo";
-import Card from "./Card";
+
 function Cards() {
 
     const monService = new ApiService("http://localhost:8080/api/v1/");
@@ -119,7 +119,7 @@ function Cards() {
 
     const viewCard = (card) => {
         setCard(card);
-        openPrintModal(card);
+        openPrintModal();
     }
 
     return (

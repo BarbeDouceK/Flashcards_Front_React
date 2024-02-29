@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import ApiService from "../../service/ApiService";
 import ReactModal from "react-modal";
+import { CardCompo } from "./CardCompo";
 
 function Tiroir() {
 
@@ -101,9 +102,22 @@ function Tiroir() {
     const openModal = () => {
         setModalOpen(true)
     }
-
     const closeModal = () => {
         setModalOpen(false)
+    }
+
+    const [cardDisplayed, setCardDisplay] = useState();
+    const [isOpenDisplayModal, setPrintModalOpen] = useState(false)
+    const openDisplayModal = () => {
+        setPrintModalOpen(true)
+    }
+    const closeDisplayModal = () => {
+        setPrintModalOpen(false)
+    }
+    const viewCard = (cardDisplayed) => {
+        console.log(cardDisplayed);
+        setCardDisplay(cardDisplayed);
+        openDisplayModal();
     }
 
     const handleSubmit = (e) => {
@@ -146,10 +160,10 @@ function Tiroir() {
                 <table className="table table-zebra border">
                     <thead>
                         <tr>
-                            <th>cardTitle</th>
-                            <th>niveau</th>
-                            <th>dateUpdate</th>
-                            <th>userId</th>
+                            <th>Titre de la carte</th>
+                            <th>Niveau actuel</th>
+                            <th>Dernier daily</th>
+                            <th></th>
                             <th></th>
                         </tr>
                     </thead>
@@ -159,7 +173,12 @@ function Tiroir() {
                                 <td>{passage.card.title}</td>
                                 <td>{passage.niveau}</td>
                                 <td>{passage.dateUpdate}</td>
-                                <td>{passage.userId}</td>
+                                <td>
+                                    <button
+                                        onClick={() => {viewCard(passage.card)}}
+                                        className="btn btn-outline"
+                                    >Afficher</button>
+                                </td>
                                 <td>
                                     <button
                                         onClick={() => { deletePassage(passage.id) }}
@@ -173,6 +192,16 @@ function Tiroir() {
                     </tbody>
                 </table>
             </div>
+
+            <ReactModal
+                isOpen={isOpenDisplayModal}
+                onRequestClose={closeDisplayModal}
+                className="w-fit h-fit border p-10 mx-auto absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gray-50"
+            >
+                <div className="gap-4 mb-5">
+                    <CardCompo card={cardDisplayed}/>
+                </div>
+            </ReactModal>
 
             <ReactModal
                 isOpen={isModalOpen}

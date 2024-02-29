@@ -21,7 +21,6 @@ export const CardCompo = ({ card }) => {
                         <div>Catégorie: {card.categoryName}</div>
                         <div className="text-xl font-medium text-black">Question: {card.question}</div>
                     </>}
-
                 </div>
             </div>
         </>
