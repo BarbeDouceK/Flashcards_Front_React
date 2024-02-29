@@ -18,7 +18,7 @@ export const CardCompo = ({ card }) => {
                     {answerDisplay && <><div className="text-slate-500">Réponse: {card.answer}</div></>}
                     {!answerDisplay && <>
                         <div>Titre: {card.title}</div>
-                        <div>Catégorie: {card.categoryName}</div>
+                        <div>Catégorie: {card.category}</div>
                         <div className="text-xl font-medium text-black">Question: {card.question}</div>
                     </>}
                 </div>
