@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import ApiService from "../../service/ApiService";
 import { useParams } from "react-router-dom";
-import { CardCompo } from "./CardCompo";
+import { CardCompo } from "../CardCompo";
 
 function Card({ carte }) {
 

@@ -1,4 +1,5 @@
 function HomePage(){
+    document.title+=": HOME";
     return(
         <>
             
