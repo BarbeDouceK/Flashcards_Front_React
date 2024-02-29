@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import ApiService from "../../service/ApiService";
 import ReactModal from "react-modal";
-import { CardCompo } from "./CardCompo";
+import { CardCompo } from "../CardCompo";
 
 function Cards() {
 
