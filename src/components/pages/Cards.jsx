@@ -100,7 +100,7 @@ function Cards() {
         const formData = new FormData(e.target)
 
         setNewCard({
-            categoryName: formData.get('categoryName'),
+            category: formData.get('categoryName'),
             title: formData.get('title'),
             question: formData.get('question'),
             answer: formData.get('answer')
