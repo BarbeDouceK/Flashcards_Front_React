@@ -9,6 +9,7 @@ import { Authentification } from './components/pages/Authentification.jsx'
 import Tiroir from './components/pages/Tiroir.jsx'
 import Footer from './components/Footer.jsx'
 import { Header } from './components/Header.jsx'
+import { Daily } from './components/pages/Daily.jsx'
 
 function App() {
 
@@ -30,6 +31,7 @@ function App() {
 						<Route path="/card/:id" element={<Card/>}></Route>
 						<Route path="/auth" element={<Authentification />}></Route>
 						<Route path="/tiroir" element={<Tiroir />}></Route>
+						<Route path="/daily" element={<Daily />}></Route>
 						{/* <Route path="/PATH" element={<PAGE/>}></Route> */}
 					</Routes>
 				</Router>

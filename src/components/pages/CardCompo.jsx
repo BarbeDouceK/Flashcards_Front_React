@@ -10,11 +10,11 @@ export const CardCompo = ({ card }) => {
 
     return (
         <>
-            <div className="p-6 max-w-sm mx-auto bg-white rounded-xl shadow-lg flex items-center space-x-4">
+            <div onClick={handleSwap} className="p-6 max-w-sm mx-auto bg-info rounded-xl shadow-lg flex items-center space-x-4">
                 <div className="shrink-0">
                     <img className="h-12 w-12" src="/vite.svg" alt="Logo" />
                 </div>
-                <div onClick={handleSwap} className="card-container m-5">
+                <div className="card-container m-5">
                     {answerDisplay && <><div className="text-slate-500">Réponse: {card.answer}</div></>}
                     {!answerDisplay && <>
                         <div>Titre: {card.title}</div>
