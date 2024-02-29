@@ -19,6 +19,9 @@ function NavBar() {
                         <li>
                             <a href="/tiroir">Vos cartes</a>
                         </li>
+                        <li>
+                            <a href="/daily">Vos Dailys</a>
+                        </li>
                     </ul>
                 </div>
         </>
