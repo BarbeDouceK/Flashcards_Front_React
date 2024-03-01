@@ -18,6 +18,9 @@ function NavBar({ userId }) {
                             <li>
                                 <a href="/auth">Authentification</a>
                             </li>
+                            <li>
+                                <a href="/register">S'enregister</a>
+                            </li>
                         </>}
                         {userId != 0 && <>
                             <li>

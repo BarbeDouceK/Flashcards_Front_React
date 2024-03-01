@@ -4,7 +4,7 @@ class ApiService {
 
     headers() {
         /* const user = localStorage.getItem('authToken'); */
-        const token = JSON.parse(localStorage.getItem('authToken') || '{}')?.token
+        const token = JSON.parse(localStorage.getItem('auth') || '{}')?.token
         return token ? 
             { headers: { Authorization: `Bearer ${token}` }} : 
             {}
@@ -16,7 +16,7 @@ class ApiService {
 
     async get(endpoint = '') {
         try {
-            const response = await this.api.get(endpoint);
+            const response = await this.api.get(endpoint,this.headers());
             return response.data
         } catch (error) {
             // Ajouter le traitement à effectuer pour le traitement des erreurs
@@ -43,7 +43,7 @@ class ApiService {
     // Méthode PUT
     async put (endpoint = '', objectToSave) {
         try{
-                const response = await this.api.put(endpoint, objectToSave);
+            const response = await this.api.put(endpoint, objectToSave,this.headers());
             return response.data;
         } catch (error){
             console.error('Erreur lors du PUT !: ' ,error)
@@ -54,7 +54,7 @@ class ApiService {
     // Méthode pour effectuer une requête DELETE
     async delete(endpoint=''){
         try{
-            const response = await this.api.delete(endpoint);
+            const response = await this.api.delete(endpoint,this.headers());
             return response.data;
         } catch (error){
             console.error('Erreur lors du DELETE !: ' ,error)
