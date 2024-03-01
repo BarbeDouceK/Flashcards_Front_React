@@ -16,10 +16,10 @@ function NavBar({ userId }) {
                         </li>
                         {userId == 0 && <>
                             <li>
-                                <a href="/auth">Authentification</a>
+                                <a href="/auth">Login</a>
                             </li>
                             <li>
-                                <a href="/register">S'enregister</a>
+                                <a href="/register">Register</a>
                             </li>
                         </>}
                         {userId != 0 && <>
@@ -35,6 +35,12 @@ function NavBar({ userId }) {
                         </>}
                         <li>
                             <a href="/card/1">Card n°1</a>
+                        </li>
+                        <li>
+                            <a href="/card/50">Card n°50</a>
+                        </li>
+                        <li>
+                            <a href="/card/86">Card n°86</a>
                         </li>
                     </ul>
                 </div>

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { CardCompo } from "../CardCompo"
 import ApiService from "../../service/ApiService";
-import { useParams } from "react-router-dom";
+import { NewDelhi } from "./NewDelhi";
 
 export const Daily = () => {
 
@@ -17,27 +17,29 @@ export const Daily = () => {
     try {
         userId = JSON.parse(localStorage.getItem('auth')).user.id;
     } catch (error) {
+        // Ajouter logout
         window.location.replace("http://localhost:5173/");
         alert(error);
     }
 
-    // Appel back a effectuer direct
     const api = new ApiService("http://localhost:8080/api/v1/passages");
 
     useEffect(() => {
-        // Méthode flechée qui met à jour la carte affichée
 
+        // Méthode flechée qui met à jour la carte affichée
         api.get(endpoint + userId)
             .then((response) => {
                 console.log('Réponse de mon GET : ');
                 console.log(response);
                 setPassage(response);
                 setCard(response.card);
+                // TODO Clean ça
             })
             .catch((error) => {
                 console.log(error);
+                setBool(true);
             })
-            .finally(console.log('GET done'));
+            .finally(console.log(`Always plays log api GET dans Daily `));
     }, [])
 
     const handleLevel = (answered) => {
@@ -47,7 +49,7 @@ export const Daily = () => {
 
         api.put(endpoiiiint)
             .then((response) => {
-                console.log(`Le Level a eu lieu` + response);
+                console.log(`La mise à jour du niveau a eu lieu` + response);
             })
             .catch((error) => {
                 console.log(`Erreur handleLevel : ` + error);
@@ -56,11 +58,14 @@ export const Daily = () => {
 
     return (
         <>
-            <CardCompo card={card} />
-            <div>
-                <button onClick={() => handleLevel()} className="btn btn-outline btn-error">Next time</button>
-                <button onClick={() => handleLevel(true)} className="btn btn-outline btn-success">Level-up</button>
-            </div>
+            {!bool && <>            <CardCompo card={card} />
+                <div>
+                    <button onClick={() => handleLevel()} className="btn btn-outline btn-error">Next time</button>
+                    <button onClick={() => handleLevel(true)} className="btn btn-outline btn-success">Level-up</button>
+                </div></>}
+            {bool && <>
+                <NewDelhi/>
+            </>}
         </>
     )
 }
