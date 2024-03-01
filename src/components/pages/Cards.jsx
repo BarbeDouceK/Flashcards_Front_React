@@ -34,6 +34,8 @@ function Cards({ isAdmin }) {
         answer: ""
     });
 
+    const [categories, setCategories] = useState([])
+
     useEffect(() => {
         monService.get(endpoint + pagepoint)
             .then((response) => {
@@ -69,6 +71,7 @@ function Cards({ isAdmin }) {
             .catch((error) => {
                 alert(error.message)
             })
+        monService.get(endpoint+"/categories").then(response => {setCategories(response)})
     }, [newCard])
 
     // Config. React-modal
@@ -210,10 +213,9 @@ function Cards({ isAdmin }) {
                         />
                         <select className="flex input input-bordered" name="categoryName">
                             <option value="">Sélectionnez une catégorie</option>
-                            <option value="TEST">Test</option>
-                            <option value="JAVA">Java</option>
-                            <option value="HTML">HTML</option>
-                            <option value="MAVEN">Maven</option>
+                            {categories.map((category) => (
+                                <option id={category} value={category}>{category}</option>
+                            ))}
                         </select>
                     </div>
                     <div className="m-auto w-fit">
