@@ -129,12 +129,12 @@ function Cards({ isAdmin }) {
         <>
             <div className="m-10">
                 <div className="flex justify-end mb-5">
-                    <button className="btn btn-outline btn-inf" onClick={openModal}>Ajouter une nouvelle carte</button>
+                    <button className="btn btn-outline btn-inf" onClick={openModal}>Ajouter une carte en BDD</button>
                 </div>
                 <div className="grid grid-cols-3 gap-10 mb-5">
-                    <button className="btn btn-outline btn-inf" disabled={pageable.pageNumber == 0} onClick={() => changePage(pageable.pageNumber - 1)}>T---</button>
+                    <button className="btn btn-outline btn-inf" disabled={pageable.pageNumber == 0} onClick={() => changePage(pageable.pageNumber - 1)}>Page précédente ---</button>
                     <div className="center" >{pageable.pageNumber + 1}</div>
-                    <button className="btn btn-outline btn-inf" disabled={pageable.pageNumber == (pageable.totalPages - 1)} onClick={() => changePage(pageable.pageNumber + 1)}>---T</button>
+                    <button className="btn btn-outline btn-inf" disabled={pageable.pageNumber == (pageable.totalPages - 1)} onClick={() => changePage(pageable.pageNumber + 1)}>--- Page suivante</button>
                 </div>
                 <table className="table table-zebra border">
                     <thead>

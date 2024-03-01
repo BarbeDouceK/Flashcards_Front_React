@@ -60,8 +60,12 @@ export const Daily = () => {
         <>
             {!bool && <>            <CardCompo card={card} />
                 <div>
-                    <button onClick={() => handleLevel()} className="btn btn-outline btn-error">Next time</button>
-                    <button onClick={() => handleLevel(true)} className="btn btn-outline btn-success">Level-up</button>
+                    <button onClick={() => {handleLevel();window.location.replace('http://localhost:5173/daily') }} className="btn btn-outline btn-error">Next time</button>
+                    <button onClick={() => {
+                            handleLevel(true)
+                            window.location.replace('http://localhost:5173/daily')
+                            }                           
+                            }className="btn btn-outline btn-success">Level-up</button>
                 </div></>}
             {bool && <>
                 <NewDelhi/>
