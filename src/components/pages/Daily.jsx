@@ -46,7 +46,7 @@ export const Daily = () => {
             <CardCompo card={card} />
             <div>
                 <button onClick={handleRAZ} className="btn btn-outline btn-error">Next time</button>
-                <button onClick={handleLevelUp} className="btn btn-outline btn-success">Next time</button>
+                <button onClick={handleLevelUp} className="btn btn-outline btn-success">Level-up</button>
             </div>
         </>
     )
