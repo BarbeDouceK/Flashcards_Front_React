@@ -43,7 +43,7 @@ class ApiService {
     // Méthode PUT
     async put (endpoint = '', objectToSave) {
         try{
-            const response = await this.api.put(endpoint, objectToSave);
+                const response = await this.api.put(endpoint, objectToSave);
             return response.data;
         } catch (error){
             console.error('Erreur lors du PUT !: ' ,error)
