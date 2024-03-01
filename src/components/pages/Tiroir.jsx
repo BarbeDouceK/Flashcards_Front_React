@@ -83,7 +83,13 @@ function Tiroir() {
         api.get(endpoint + pagepoint)
             .then((response) => {
                 if (response.empty) {
-                    window.location.replace("http://localhost:5173/tiroir")
+                    /* si response est vide, il y a deux possibilités */
+                    /* le user connecté à des passages mais la page courante est vide */
+                    if (response.totalElements != 0) {
+                        /* on revient à la page d'origine */
+                        window.location.replace("http://localhost:5173/tiroir")
+                    } 
+                    /* le user connecté n'a aucun passage, on le laisse accéder à la page pour qu'il puisse en ajouter */
                 } else {
                     setPassages(response.content)
                 }
