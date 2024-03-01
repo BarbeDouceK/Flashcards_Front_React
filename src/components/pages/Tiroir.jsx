@@ -16,6 +16,7 @@ function Tiroir() {
         card:{
             id: 0
         },
+        niveau:"NIVEAU1",
         userId: userId
     });
 
