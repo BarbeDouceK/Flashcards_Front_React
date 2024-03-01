@@ -44,6 +44,9 @@ function Tiroir() {
 
     const [isModalOpen, setModalOpen] = useState(false)
 
+    /* boolean pour désactiver les boutons de changements de pages */
+    const [userNoCard, setUserNoCard] = useState(true)
+
     useEffect(() => {
         api.get(endpoint + pagepoint)
             .then((response) => {
@@ -82,6 +85,7 @@ function Tiroir() {
 
         api.get(endpoint + pagepoint)
             .then((response) => {
+                setUserNoCard(false)
                 if (response.empty) {
                     /* si response est vide, il y a deux possibilités */
                     /* le user connecté à des passages mais la page courante est vide */
@@ -90,6 +94,10 @@ function Tiroir() {
                         window.location.replace("http://localhost:5173/tiroir")
                     } 
                     /* le user connecté n'a aucun passage, on le laisse accéder à la page pour qu'il puisse en ajouter */
+                    else {
+                        setUserNoCard(true)
+                    }
+                    
                 } else {
                     setPassages(response.content)
                 }
@@ -159,9 +167,9 @@ function Tiroir() {
                     <button className="btn btn-outline btn-inf" onClick={openModal}>Ajouter un Passage</button>
                 </div>
                 <div className="grid grid-cols-3 gap-10 mb-5">
-                    <button className="btn btn-outline btn-inf" disabled={pageable.pageNumber == 0} onClick={() => changePage(pageable.pageNumber - 1)}>T---</button>
+                    <button className="btn btn-outline btn-inf" disabled={pageable.pageNumber == 0 || userNoCard} onClick={() => changePage(pageable.pageNumber - 1)}>T---</button>
                     <div className="center" >{Number(pageable.pageNumber) + 1}</div>
-                    <button className="btn btn-outline btn-inf" disabled={pageable.pageNumber == (pageable.totalPages - 1)} onClick={() => changePage(pageable.pageNumber + 1)}>---T</button>
+                    <button className="btn btn-outline btn-inf" disabled={pageable.pageNumber == (pageable.totalPages - 1) || userNoCard} onClick={() => changePage(pageable.pageNumber + 1)}>---T</button>
                 </div>
                 <table className="table table-zebra border">
                     <thead>
