@@ -128,9 +128,9 @@ function Cards({ isAdmin }) {
     return (
         <>
             <div className="m-10">
-                <div className="flex justify-end mb-5">
-                    <button className="btn btn-outline btn-inf" onClick={openModal}>Ajouter une carte en BDD</button>
-                </div>
+                {isAdmin && <div className="flex justify-end mb-5">
+                     <button className="btn btn-outline btn-inf" onClick={openModal}>Ajouter une carte en BDD</button>
+                </div>}
                 <div className="grid grid-cols-3 gap-10 mb-5">
                     <button className="btn btn-outline btn-inf" disabled={pageable.pageNumber == 0} onClick={() => changePage(pageable.pageNumber - 1)}>Page précédente ---</button>
                     <div className="center" >{pageable.pageNumber + 1}</div>
@@ -159,14 +159,15 @@ function Cards({ isAdmin }) {
                                         className="btn btn-outline"
                                     >Afficher</button>
                                 </td>
-                                {isAdmin && <>
-                                    <td>
-                                        <button
-                                            onClick={() => { deleteCard(card.id) }}
-                                            className="btn btn-error m-auto"
-                                        >Supprimer</button>
-                                    </td>
-                                </>}
+                                {isAdmin && <td>
+                                    <button
+                                        onClick={() => {
+                                            deleteCard(card.id)
+                                        }}
+                                        className="btn btn-error m-auto"
+                                    >Supprimer
+                                    </button>
+                                </td>}
                                 
                             </tr>
                         )
